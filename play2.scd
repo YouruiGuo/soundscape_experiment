@@ -1,6 +1,6 @@
 s.boot;
 
-({  var fn = "/Users/margaret/Documents/thesis/bandit-solver/audio/";
+({  var fn = "/home/vagrant/soundscape_experiment/audio/";
 	var filenames = Array.with(fn++"Beach.wav", fn++"MediumHardRain.wav", fn++"bird.wav", fn++"forest.wav", fn++"river.wav", fn++"BirdsSinging.wav", fn++"Rain_Totoro_Forest.wav", fn++"fire.wav", fn++"ring.wav", fn++"water.wav",fn++"Beach.wav", fn++"MediumHardRain.wav", fn++"bird.wav", fn++"forest.wav", fn++"river.wav").postln;
 	~buffers = filenames.collect{ | item |
 		Buffer.read(s, item);
@@ -40,4 +40,4 @@ s.boot;
 }.fork();
 )
 
-s.freeAll;
+//s.freeAll;
