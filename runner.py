@@ -12,6 +12,7 @@ from ucb import Tree
 #from pythonosc import udp_client
 import OSC
 import requests
+import uuid
 
 #pygame.init()
 
@@ -61,6 +62,7 @@ class Runner(object):
 		self.selected = range(self.num) #initial
 		self.playtime = maxmimum_time # 30 secs
 		self.UCB = Tree()
+		self.uuid = str(uuid.uuid4())
 
 		print(self.UCB)
 		i = 0
@@ -105,6 +107,7 @@ class Runner(object):
 		req_data['songs'] = send
 		req_data['timestamp'] = start_time
 		req_data['reward'] = self.reward
+		req_data['uuid'] = self.uuid
 		#send = ' '.join(str(e) for e in send_list_first)+ ' '+' '.join(str(e) for e in self.selected[1])+' '+' '.join(str(e) for e in send_list_last)
 		#send = ' '.join(str(e) for e in send)
 		#print(send)
