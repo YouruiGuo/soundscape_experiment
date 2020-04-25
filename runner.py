@@ -57,7 +57,7 @@ class Runner(object):
 		self.mp3_list = []
 		self.audio_dict = {}
 		self.new_reward = False
-		self.reward = 0
+		self.rew = 0
 		self.num = 3
 		self.selected = range(self.num) #initial
 		self.playtime = maxmimum_time # 30 secs
@@ -77,7 +77,7 @@ class Runner(object):
 
 	def get_next(self):
 		rew = maximum_reward
-		self.reward = rew
+		self.rew = rew
 		#print(self.filenames)
 		if not self.new_reward:
 			self.selected = self.UCB.UCB_step(rew, numstep)
@@ -106,7 +106,7 @@ class Runner(object):
 		send = send_list_first + send_list_middle + send_list_last
 		req_data['songs'] = send
 		req_data['timestamp'] = start_time
-		req_data['reward'] = self.reward
+		req_data['reward'] = self.rew
 		req_data['uuid'] = self.uuid
 		#send = ' '.join(str(e) for e in send_list_first)+ ' '+' '.join(str(e) for e in self.selected[1])+' '+' '.join(str(e) for e in send_list_last)
 		#send = ' '.join(str(e) for e in send)
@@ -141,7 +141,7 @@ class Runner(object):
 
 	def reward(self, rew):
 		global th, send
-		self.reward = rew
+		self.rew = rew
 		self.new_reward = True
 		self.selected = self.UCB.UCB_step(rew,numstep)
 		#self.selected = selection(rew)
