@@ -77,11 +77,12 @@ class Runner(object):
 
 	def get_next(self):
 		rew = maximum_reward
-		self.rew = rew
+		
 		#print(self.filenames)
 		if not self.new_reward:
 			self.selected = self.UCB.UCB_step(rew, numstep)
 			#self.selected = selection(rew)
+			self.rew = rew
 			print("from get_next")
 
 	def play(self):
@@ -92,6 +93,13 @@ class Runner(object):
 		th.start()
 		start_time = time.time()
 		self.new_reward = False
+		if numstep != 1:
+			req_data['reward'] = self.rew
+			# send http get request
+			print(req_data)
+			r = requests.get(url = URL, params = req_data) 	
+			#print(r)
+			
 		# TODO: play self.ids
 		#print(self.selected)
 		send_list_first = [0]*self.selected[0]*len(self.selected[1])
@@ -99,14 +107,13 @@ class Runner(object):
 		send_list_middle = []
 
 		for s in self.selected[1]:
-			if s == 0:
+			if s == 1:
 				send_list_middle.append(0.2)
-			else:
+			elif s == 2:
 				send_list_middle.append(0.8)
 		send = send_list_first + send_list_middle + send_list_last
 		req_data['songs'] = send
 		req_data['timestamp'] = start_time
-		req_data['reward'] = self.rew
 		req_data['uuid'] = self.uuid
 		#send = ' '.join(str(e) for e in send_list_first)+ ' '+' '.join(str(e) for e in self.selected[1])+' '+' '.join(str(e) for e in send_list_last)
 		#send = ' '.join(str(e) for e in send)
@@ -117,10 +124,7 @@ class Runner(object):
 			oscmsg.append(s)
 		OSC_client.send(oscmsg)
 		
-		# send http get request
-		print(req_data)
-		r = requests.get(url = URL, params = req_data) 	
-		#print(r)
+		
 		#client.send_message("/print", send)
 		'''
 		if len(self.selected) == 1:
