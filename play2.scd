@@ -1,7 +1,7 @@
 s.boot;
 
 ({  var fn = "/home/vagrant/soundscape_experiment/audio/";
-	var filenames = Array.with(fn++"Beach.wav", fn++"MediumHardRain.wav", fn++"bird.wav", fn++"forest.wav", fn++"river.wav", fn++"BirdsSinging.wav", fn++"Rain_Totoro_Forest.wav", fn++"fire.wav", fn++"ring.wav", fn++"water.wav",fn++"Beach.wav", fn++"MediumHardRain.wav", fn++"bird.wav", fn++"forest.wav", fn++"river.wav").postln;
+	var filenames = Array.with(fn++"forest.wav", fn++"jungle.wav", fn++"canoe_paddle.wav", fn++"ocean_noise.wav", fn++"beach.wav", fn++"seagull.wav", fn++"forest_evening.wav", fn++"night_camp.wav", fn++"cave_water_drops.wav", fn++"hard_rain.wav",fn++"distant_storm.wav", fn++"rain_tent.wav", fn++"car_rain.wav", fn++"rain.wav", fn++"city_rain.wav").postln;
 	
 	SynthDef(\playbuf,{
 		arg out=0,bufnum=0, rate=1, trigger=1, startPos=0, loop=1, amp=1;
