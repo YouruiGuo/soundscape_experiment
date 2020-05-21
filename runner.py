@@ -20,6 +20,8 @@ import uuid
 OSC_client = OSC.OSCClient()
 OSC_client.connect(('127.0.0.1', 57120))   
 URL = 'https://webdocs.cs.ualberta.ca/~yourui/index.py'
+acquire_url = 'https://webdocs.cs.ualberta.ca/~yourui/get.py'
+current_url = 'https://webdocs.cs.ualberta.ca/~yourui/currentplaying.py'
 
 th = None
 fn = [f for f in os.listdir('./audio/') if f.endswith(".wav")]
@@ -63,6 +65,7 @@ class Runner(object):
 		self.playtime = maxmimum_time # 30 secs
 		self.UCB = Tree()
 		self.uuid = str(uuid.uuid4())
+		self.num_song = 0
 
 		print(self.UCB)
 		i = 0
@@ -74,14 +77,27 @@ class Runner(object):
 			#self.mp3_list.append(sa.wavread(self.path+aud))
 			self.mp3_list.append(AudioSegment.from_file(self.path+aud))
 		'''
+		data = {}
+		data['uuid'] = self.uuid
+		r = requests.get(url=currentplaying, params=data)
+
+
+	def dj_control(self):
+		data = {}
+		data['uuid'] = self.uuid
+		data['num_song'] = self.num_song
+		r = requests.post(url = acquire_url, params = data)
+		res = r.content.split()
+		self.num_song += 1
+		return [res[0],res[1:]]
 
 	def get_next(self):
 		rew = maximum_reward
 		
 		#print(self.filenames)
 		if not self.new_reward:
-			self.selected = self.UCB.UCB_step(rew, numstep)
-			#self.selected = selection(rew)
+			#self.selected = self.UCB.UCB_step(rew, numstep)
+			self.selected = self.dj_control()
 			self.rew = rew
 			print("from get_next")
 
@@ -147,8 +163,8 @@ class Runner(object):
 		global th, send
 		self.rew = rew
 		self.new_reward = True
-		self.selected = self.UCB.UCB_step(rew,numstep)
-		#self.selected = selection(rew)
+		#self.selected = self.UCB.UCB_step(rew,numstep)
+		self.selected = self.dj_control()
 		self.play()
 		print("from new_reward")
 
