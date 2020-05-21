@@ -61,7 +61,7 @@ class Runner(object):
 		self.new_reward = False
 		self.rew = 0
 		self.num = 3
-		self.selected = range(self.num) #initial
+		self.selected = [0,[0,0,0]] #initial
 		self.playtime = maxmimum_time # 30 secs
 		self.UCB = Tree()
 		self.uuid = str(uuid.uuid4())
@@ -79,16 +79,22 @@ class Runner(object):
 		'''
 		data = {}
 		data['uuid'] = self.uuid
-		r = requests.get(url=currentplaying, params=data)
+		r = requests.get(url=current_url, params=data)
 
 
 	def dj_control(self):
+		global numstep
+		if numstep == 1:
+			res = [0,0,0,0]
+			return [res[0],res[1:]]
 		data = {}
 		data['uuid'] = self.uuid
 		data['num_song'] = self.num_song
 		r = requests.post(url = acquire_url, params = data)
-		res = r.content.split()
+		res = r.content
+		print(res)
 		self.num_song += 1
+		
 		return [res[0],res[1:]]
 
 	def get_next(self):
