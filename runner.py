@@ -84,18 +84,20 @@ class Runner(object):
 
 	def dj_control(self):
 		global numstep
+		numstep += 1
 		if numstep == 1:
-			res = [0,0,0,0]
-			return [res[0],res[1:]]
+			return [0,[1,1,1]]
 		data = {}
 		data['uuid'] = self.uuid
 		data['num_song'] = self.num_song
 		r = requests.post(url = acquire_url, params = data)
 		res = r.content
-		print(res)
+		rest = [int(ii) for ii in res if ii.isdigit()]
+		print(rest)
+		if (len(rest) > 4):
+			return [0,[1,1,1]]
 		self.num_song += 1
-		
-		return [res[0],res[1:]]
+		return [rest[0], rest[1:]]
 
 	def get_next(self):
 		rew = maximum_reward
@@ -109,7 +111,6 @@ class Runner(object):
 
 	def play(self):
 		global th, s, start_time, numstep, numsteps, send
-		numstep += 1
 		self.get_next()
 		th = threading.Timer(self.playtime, self.play)
 		th.start()
